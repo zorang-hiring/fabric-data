@@ -22,7 +22,20 @@ You will earn bonus points for testing your application and demonstrating archit
 
 # Requirements
 
-# Install
+# Installation
+
+##### 1. In root directory execute
+```
+cd src && php composer.phar install
+```
+or
+```
+composer install
+```
+##### 2. Go back to root directory and execute
+```
+docker-compose -f docker/docker-compose.yml --env-file docker/sample.env up --build
+```
 
 # Use
 
