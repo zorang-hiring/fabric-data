@@ -1,4 +1,4 @@
 <?php
 declare(strict_types=1);
-echo 444;
-exit;
+
+require_once realpath(__DIR__ . '/../../') . '/vendor/autoload.php';

@@ -4,9 +4,9 @@
     <include>
       <directory suffix=".php">src</directory>
     </include>
-    <exclude>
-      <directory>src/http</directory>
-    </exclude>
+<!--    <exclude>-->
+<!--      <directory>src/http/public</directory>-->
+<!--    </exclude>-->
   </coverage>
   <testsuites>
     <testsuite name="tests">
