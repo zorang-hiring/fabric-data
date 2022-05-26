@@ -11,13 +11,16 @@ class PublicationController
         public PublicationService $service
     ){}
 
-    public function handle(Request $request, Response $response)
+    public function __invoke(Request $request, Response $response)
     {
+        $result = $this->service->handle(
+            (string) $request->getAttribute('q')
+        );
+
         $response->getBody()->write(json_encode([
             'success' => 'OK',
-            'result' => $this->service->handle(
-                (string) $request->getAttribute('q')
-            )
+            'result' => $result
         ]));
+        // $response->withHeader('Content-Type', 'application/json; charset=UTF-8'); // todo remove or enable
     }
 }

@@ -24,7 +24,8 @@ class PublicationControllerTest extends TestCase
     public function testHandle()
     {
         // WHEN
-        $this->controller->handle(
+        $controller = $this->controller;
+        $controller(
             (new ServerRequest('GET', 'https://some.com'))
                 ->withAttribute('q', 'some title')
             ,

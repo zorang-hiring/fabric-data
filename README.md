@@ -35,4 +35,8 @@ docker-compose -f docker/docker-compose.yml --env-file docker/sample.env up --bu
 
 # Use
 
+## API
+`GET http://127.0.0.1:8081/api/publications?q=SomeTitle`
+Use parameter "q" as search parameter
+
 # Tests
