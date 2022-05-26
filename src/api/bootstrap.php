@@ -37,8 +37,8 @@ $controller = new PublicationController(
 $server->get('/api/publications', $controller);
 
 // default route
-$server->options('/{routes:.+}', function ($request, $response, $args) {
-    return $response;
-});
+//$server->options('/{routes:.+}', function ($request, $response, $args) {
+//    return $response;
+//});
 
 $server->run();

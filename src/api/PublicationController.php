@@ -17,10 +17,18 @@ class PublicationController
             (string) $request->getAttribute('q')
         );
 
+        return $this->buildResponse($response, $result);
+    }
+
+    protected function buildResponse(Response $response, Model\PublicationDtoCollection $result): Response
+    {
         $response->getBody()->write(json_encode([
             'success' => 'OK',
             'result' => $result
         ]));
-        // $response->withHeader('Content-Type', 'application/json; charset=UTF-8'); // todo remove or enable
+        return $response->withHeader(
+            'Content-Type',
+            'application/json; charset=UTF-8'
+        );
     }
 }
