@@ -24,8 +24,8 @@ $controller = new PublicationController(
             DriverManager::getConnection([
                 'password' => (string) $_ENV['MYSQL_PASSWORD'],
                 'user' => (string) $_ENV['MYSQL_USER'],
-                // 'host' => (string) $_ENV['MYSQL_DATABASE'],
-                'scheme' => (string) $_ENV['MYSQL_DATABASE'],
+                'host' => (string) $_ENV['MYSQL_ALIAS'],
+                'dbname' => (string) $_ENV['MYSQL_DATABASE'],
                 'driver' => 'pdo_mysql'
             ]),
             new PublicationDtoFactory()
