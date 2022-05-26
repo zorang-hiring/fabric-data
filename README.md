@@ -22,6 +22,9 @@ You will earn bonus points for testing your application and demonstrating archit
 
 # Requirements
 
+1. Docker
+2. PHP any version (to run composer)
+
 # Installation
 
 ##### 1. In root directory execute
@@ -33,10 +36,20 @@ php composer.phar install --ignore-platform-reqs
 docker-compose -f docker/docker-compose.yml --env-file docker/sample.env up --build
 ```
 
-# Use
+##### MySQL connection:
+- DATABASE = sample
+- PASSWORD = secret
+- USER = myuser
+
+# Usage
 
 ## API
 `GET http://127.0.0.1:8081/api/publications?q=SomeTitle`
 Use parameter "q" as search parameter
 
 # Tests
+After composer install in step 1, you can run tests:
+
+`./vendor/bin/phpunit tests`
+
+API CODE COVERAGE IS 100%!

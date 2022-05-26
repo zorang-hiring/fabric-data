@@ -4,9 +4,11 @@
     <include>
       <directory suffix=".php">src</directory>
     </include>
-<!--    <exclude>-->
-<!--      <directory>src/http/public</directory>-->
-<!--    </exclude>-->
+    <exclude>
+      <directory>src/api/http</directory>
+      <directory>src/ui</directory>
+      <file>src/api/bootstrap.php</file>
+    </exclude>
   </coverage>
   <testsuites>
     <testsuite name="tests">
