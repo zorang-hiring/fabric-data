@@ -20,6 +20,16 @@ class PublicationRepositoryImpl implements PublicationRepository
         // todo use transaction
         foreach ($publications->getAll() as $publication) {
 
+            $posterExists = $this->connection->fetchOne(
+                "SELECT id FROM posters WHERE md5 = :md5",
+                [
+                    'md5' => md5($publication->poster)
+                ],
+                [
+                    'md5' => ParameterType::STRING
+                ]
+            );
+
             $this->connection->executeStatement(
                 "INSERT INTO posters (md5, url) values (:md5, :url)",
                 [

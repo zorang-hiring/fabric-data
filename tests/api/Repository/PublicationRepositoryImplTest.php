@@ -113,6 +113,10 @@ class PublicationRepositoryImplTest extends TestCase
 
 
         // EXPECTED
+        $typesFindPoster = [
+            'md5' => ParameterType::STRING
+        ];
+        $sqlFindPoster = "SELECT id FROM posters WHERE md5 = :md5";
         $typesInsertPoster = [
             'md5' => ParameterType::STRING,
             'url' => ParameterType::STRING,
@@ -128,6 +132,28 @@ class PublicationRepositoryImplTest extends TestCase
         $sqlReplacePublication =
             "REPLACE INTO publications (externalId, title, year, type, poster_id) values "
             . "(:externalId, :title, :year, :type, :poster_id)";
+
+        $this->connection
+            ->expects(self::exactly(3))
+            ->method('fetchOne')
+            ->withConsecutive(
+                [
+                    $sqlFindPoster,
+                    ['md5' => md5('poster13')],
+                    $typesFindPoster
+                ],
+                [
+                    $sqlFindPoster,
+                    ['md5' => md5('poster2')],
+                    $typesFindPoster
+                ],
+                [
+                    $sqlFindPoster,
+                    ['md5' => md5('poster13')],
+                    $typesFindPoster
+                ]
+            )
+            ->willReturnOnConsecutiveCalls(false, false, ['id' => 3]);
 
         $this->connection
             ->expects(self::exactly(3))
