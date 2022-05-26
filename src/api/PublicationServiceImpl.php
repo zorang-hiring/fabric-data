@@ -3,16 +3,25 @@ declare(strict_types=1);
 
 namespace App\api;
 
+use App\api\Exception\UnexpectedExternalPublicationsException;
+use Psr\Log\LoggerInterface;
+
 class PublicationServiceImpl implements PublicationService
 {
     public function __construct(
         protected PublicationExternGateway $externGateway,
-        protected PublicationLocalStorage $localStorage
+        protected PublicationLocalStorage $localStorage,
+        protected LoggerInterface $logger
     ){}
 
     public function handle(string $filterByTitle): PublicationDtoCollection
     {
-        $externalResult = $this->externGateway->search($filterByTitle);
+        try {
+            $externalResult = $this->externGateway->search($filterByTitle);
+        } catch (UnexpectedExternalPublicationsException $e) {
+            $this->logger->warning('Unexpected external gateway result');
+            $externalResult = new PublicationDtoCollection();
+        }
         $localResult = $this->localStorage->searchByTitle($filterByTitle);
 
         if (count($toSave = $this->getItemsToSaveLocally($externalResult, $localResult))) {

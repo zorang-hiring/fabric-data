@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace App\Tests\api;
 
+use App\api\Exception\UnexpectedExternalPublicationsException;
 use App\api\PublicationDto;
 use App\api\PublicationDtoCollection;
 use App\api\PublicationDtoFactory;
 use App\api\PublicationServiceImpl;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 
 class PublicationServiceImplTest extends TestCase
 {
@@ -31,7 +33,8 @@ class PublicationServiceImplTest extends TestCase
         $this->pblFactory = new PublicationDtoFactory();
         $this->service = new PublicationServiceImpl(
             $this->externGateway,
-            $this->localStorage
+            $this->localStorage,
+            new NullLogger()
         );
 
         $this->publicationA = $this->pblFactory->makeOne([
@@ -120,6 +123,36 @@ class PublicationServiceImplTest extends TestCase
             (new PublicationDtoCollection())
                 ->addItem($this->publicationA)
                 ->addItem($this->publicationB)
+        );
+        $this->localStorage->setFakeFindByTitle(
+            self::TITLE_SEARCH,
+            (new PublicationDtoCollection())
+                ->addItem($this->publicationA)
+                ->addItem($this->publicationB)
+        );
+
+        // WHEN
+        $result = $this->service->handle(self::TITLE_SEARCH);
+
+        // THEN
+        self::assertEquals(
+            (new PublicationDtoCollection())
+                ->addItem($this->publicationA)
+                ->addItem($this->publicationB),
+            $result
+        );
+        self::assertSame(
+            null,
+            $this->localStorage->spySavedItems()
+        );
+    }
+
+    public function test_when_fetch_collectionA_thows_exception_but_has_collection_locally_then_do_not_store_but_return_local()
+    {
+        // GIVEN
+        $this->externGateway->setFakeResult(
+            self::TITLE_SEARCH,
+            new UnexpectedExternalPublicationsException()
         );
         $this->localStorage->setFakeFindByTitle(
             self::TITLE_SEARCH,
