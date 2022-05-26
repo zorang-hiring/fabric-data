@@ -15,7 +15,11 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 // init Server
 $app = AppFactory::create();
 $app->addRoutingMiddleware();
-$app->addErrorMiddleware(true, true, true); // todo displayErrorsDetails set to false
+$app->addErrorMiddleware(
+    (bool) $_ENV['APP_SHOW_ERRORS'],
+    true,
+    true
+);
 
 // init DB connection
 $dbConnection = DriverManager::getConnection([

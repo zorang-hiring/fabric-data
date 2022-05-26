@@ -14,6 +14,7 @@ services:
       - MYSQL_USER
       - APP_SECRET_KEY
       - APP_CREATE_USERS_TOKEN
+      - APP_SHOW_ERRORS
       - APP_3RD_PARTY_PUBLICATIONS_API_KEY
     volumes:
       - ${HOST_SOURCE_CODE_DIR}:/var/www/current

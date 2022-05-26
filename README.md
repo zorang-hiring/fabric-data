@@ -46,7 +46,7 @@ docker-compose -f docker/docker-compose.yml --env-file docker/sample.env up --bu
 
 ## API
 
-GET `http://127.0.0.1:8081/api/publications?q=SomeTitle`
+GET `http://127.0.0.1:8081/api/publications?q=Mad+Max`
 
 Use parameter "q" as search parameter
 
@@ -61,3 +61,7 @@ After composer install in step 1, you can run tests:
 
 API CODE COVERAGE IS 100%! 
 SEE https://take.ms/xFXxu 
+
+# Debuging
+
+To show errors in API edit `docker/sample.env` file variable `APP_SHOW_ERRORS`.
