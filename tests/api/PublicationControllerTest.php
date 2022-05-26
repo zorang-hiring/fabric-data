@@ -25,7 +25,7 @@ class PublicationControllerTest extends TestCase
     public function testHandle()
     {
         // GIVEN
-        $request = (new ServerRequest('GET', 'https://some.com'));
+        $request = (new ServerRequest('GET', ''));
         $request = $request->withQueryParams(['q' => 'some title']);
 
         // WHEN
