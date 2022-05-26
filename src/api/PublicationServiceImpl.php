@@ -16,12 +16,7 @@ class PublicationServiceImpl implements PublicationService
 
     public function handle(string $filterByTitle): PublicationDtoCollection
     {
-        try {
-            $externalResult = $this->externGateway->search($filterByTitle);
-        } catch (UnexpectedExternalPublicationsException $e) {
-            $this->logger->warning('Unexpected external gateway result');
-            $externalResult = new PublicationDtoCollection();
-        }
+        $externalResult = $this->searchExternalPublications($filterByTitle);
         $localResult = $this->localStorage->searchByTitle($filterByTitle);
 
         if (count($toSave = $this->getItemsToSaveLocally($externalResult, $localResult))) {
@@ -29,6 +24,19 @@ class PublicationServiceImpl implements PublicationService
         }
 
         return $this->joinWithUnique($externalResult, $localResult);
+    }
+
+    protected function searchExternalPublications(string $filterByTitle): PublicationDtoCollection
+    {
+        try {
+            $externalResult = $this->externGateway->search($filterByTitle);
+        } catch (UnexpectedExternalPublicationsException $e) {
+            // if external publications can not be obtained then log warning and return empty
+            // publications to avoid braking if frontend
+            $this->logger->warning('Unexpected external gateway result');
+            $externalResult = new PublicationDtoCollection();
+        }
+        return $externalResult;
     }
 
     protected function getItemsToSaveLocally(
