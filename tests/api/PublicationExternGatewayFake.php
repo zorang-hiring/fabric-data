@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Tests\api;
 
 use App\api\Exception\UnexpectedExternalPublicationsException;
-use App\api\PublicationDtoCollection;
+use App\api\Model\PublicationDtoCollection;
 use App\api\PublicationExternGateway;
 
 class PublicationExternGatewayFake implements PublicationExternGateway

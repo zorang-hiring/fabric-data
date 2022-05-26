@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace App\Tests\api;
 
 use App\api\Exception\UnexpectedExternalPublicationsException;
-use App\api\PublicationDtoCollection;
-use App\api\PublicationDtoFactory;
+use App\api\Model\PublicationDtoCollection;
+use App\api\Model\PublicationDtoFactory;
 use App\api\PublicationExternGatewayImpl;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;

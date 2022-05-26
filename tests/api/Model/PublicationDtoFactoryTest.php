@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Tests\api;
+namespace App\Tests\api\Model;
 
-use App\api\PublicationDto;
-use App\api\PublicationDtoFactory;
+use App\api\Model\PublicationDto;
+use App\api\Model\PublicationDtoFactory;
 use PHPUnit\Framework\TestCase;
 
 class PublicationDtoFactoryTest extends TestCase

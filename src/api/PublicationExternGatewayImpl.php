@@ -4,6 +4,9 @@ declare(strict_types=1);
 namespace App\api;
 
 use App\api\Exception\UnexpectedExternalPublicationsException;
+use App\api\Model\PublicationDto;
+use App\api\Model\PublicationDtoCollection;
+use App\api\Model\PublicationDtoFactory;
 use GuzzleHttp\ClientInterface;
 
 class PublicationExternGatewayImpl implements PublicationExternGateway

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\api;
 
 use App\api\Exception\UnexpectedExternalPublicationsException;
+use App\api\Model\PublicationDtoCollection;
 
 interface PublicationExternGateway
 {

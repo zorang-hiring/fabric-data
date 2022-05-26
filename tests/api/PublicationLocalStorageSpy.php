@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Tests\api;
 
-use App\api\PublicationDtoCollection;
+use App\api\Model\PublicationDtoCollection;
 use App\api\PublicationLocalStorage;
 
 class PublicationLocalStorageSpy implements PublicationLocalStorage

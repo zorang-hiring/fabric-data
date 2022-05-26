@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace App\Tests\api;
 
 use App\api\Exception\UnexpectedExternalPublicationsException;
-use App\api\PublicationDto;
-use App\api\PublicationDtoCollection;
-use App\api\PublicationDtoFactory;
+use App\api\Model\PublicationDto;
+use App\api\Model\PublicationDtoCollection;
+use App\api\Model\PublicationDtoFactory;
 use App\api\PublicationServiceImpl;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
