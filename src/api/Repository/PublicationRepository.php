@@ -7,7 +7,7 @@ use App\api\Model\PublicationModelCollection;
 
 interface PublicationRepository
 {
-    public function save(PublicationModelCollection $publications): void;
+    public function save(PublicationRepositorySaveDto $publication): void;
 
     public function searchByTitle(string $filterByTitle): PublicationModelCollection;
 }

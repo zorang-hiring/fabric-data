@@ -12,17 +12,17 @@ class PublicationServiceImpl implements PublicationService
 {
     public function __construct(
         protected PublicationExternGateway $externGateway,
-        protected PublicationRepository    $localStorage,
+        protected PublicationInternalStore $internalStorage,
         protected ?LoggerInterface         $logger = null
     ){}
 
     public function handle(string $filterByTitle): PublicationModelCollection
     {
         $externalResult = $this->searchExternalPublications($filterByTitle);
-        $localResult = $this->localStorage->searchByTitle($filterByTitle);
+        $localResult = $this->internalStorage->searchByTitle($filterByTitle);
 
         if (count($toSave = $this->getItemsToSaveLocally($externalResult, $localResult))) {
-            $this->localStorage->save($toSave);
+            $this->internalStorage->store($toSave);
         }
 
         return $this->joinWithUnique($externalResult, $localResult);

@@ -1,12 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Tests\api\Repository;
+namespace App\Tests\api;
 
 use App\api\Model\PublicationModelCollection;
-use App\api\Repository\PublicationRepository;
+use App\api\PublicationInternalStore;
+use App\api\Repository\PublicationRepositorySaveDto;
 
-class PublicationRepositorySpy implements PublicationRepository
+class PublicationInternalStoreSpy implements PublicationInternalStore
 {
     protected PublicationModelCollection $spyStored;
     protected array $fakeFindByTitle = [];
@@ -22,7 +23,7 @@ class PublicationRepositorySpy implements PublicationRepository
         return null;
     }
 
-    public function save(PublicationModelCollection $publications): void
+    public function store(PublicationModelCollection $publications): void
     {
         $this->spyStored = $publications;
     }

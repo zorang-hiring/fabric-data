@@ -6,22 +6,18 @@ namespace App\Tests\api\Repository;
 use App\api\Model\PublicationModelCollection;
 use App\api\Model\PublicationModelFactory;
 use App\api\Repository\PublicationRepositoryImpl;
+use App\api\Repository\PublicationRepositorySaveDto;
 use Doctrine\DBAL\ParameterType;
-use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
-use Doctrine\DBAL\Connection;
 
-class PublicationRepositoryImplTest extends TestCase
+class PublicationRepositoryImplTest extends AbstractRepositoryTestCase
 {
     protected PublicationRepositoryImpl $storage;
-    protected Connection|MockObject $connection;
     protected PublicationModelFactory $modelFactory;
     
     protected function setUp(): void
     {
         parent::setUp();
         $this->modelFactory = new PublicationModelFactory();
-        $this->connection = $this->mockDbConnection();
         $this->storage = new PublicationRepositoryImpl(
             $this->connection,
             $this->modelFactory
@@ -87,38 +83,30 @@ class PublicationRepositoryImplTest extends TestCase
     public function testSave()
     {
         // GIVEN
-        $publications = new PublicationModelCollection();
-        $publications
-            ->addItem($this->modelFactory->makeOne([
-                'externalId' => 'externId1',
-                'type' => 'type1',
-                'title' => 'title1',
-                'year' => '2001',
-                'poster' => 'poster13',
-            ]))
-            ->addItem($this->modelFactory->makeOne([
-                'externalId' => 'externId2',
-                'type' => 'type2',
-                'title' => 'title2',
-                'year' => '2002',
-                'poster' => 'poster2'
-            ]))
-            ->addItem($this->modelFactory->makeOne([
-                'externalId' => 'externId3',
-                'type' => 'type3',
-                'title' => 'title3',
-                'year' => '2003',
-                'poster' => 'poster13'
-            ]));;
+        $publications = [];
+
+        $dto = new PublicationRepositorySaveDto();
+        $dto->externalId = 'externalId1';
+        $dto->type = 'type1';
+        $dto->title = 'title1';
+        $dto->year = 2001;
+        $dto->posterId = null;
+        $publications[] = $dto;
+
+        $dto = new PublicationRepositorySaveDto();
+        $dto->externalId = 'externalId2';
+        $dto->type = 'type2';
+        $dto->title = 'title2';
+        $dto->year = 2002;
+        $dto->posterId = 2;
+        $publications[] = $dto;
 
 
         // EXPECTED
-        $sqlFindPoster = "SELECT id FROM posters WHERE md5 = :md5";
-        $typesInsertPoster = [
-            'md5' => ParameterType::STRING,
-            'url' => ParameterType::STRING,
-        ];
-        $sqlInsertPoster = "INSERT INTO posters (md5, url) values (:md5, :url)";
+        $sqlReplacePublication =
+            "REPLACE INTO publications (externalId, title, year, type, poster_id) values "
+            . "(:externalId, :title, :year, :type, :poster_id)";
+
         $typesReplacePublication = [
             'externalId' => ParameterType::STRING,
             'title' => ParameterType::STRING,
@@ -126,100 +114,37 @@ class PublicationRepositoryImplTest extends TestCase
             'type' => ParameterType::STRING,
             'poster_id' => ParameterType::INTEGER
         ];
-        $sqlReplacePublication =
-            "REPLACE INTO publications (externalId, title, year, type, poster_id) values "
-            . "(:externalId, :title, :year, :type, :poster_id)";
-
-        $this->connection
-            ->expects(self::exactly(3))
-            ->method('fetchOne')
-            ->withConsecutive(
-                [
-                    $sqlFindPoster,
-                    ['md5' => md5('poster13')],
-                    ['md5' => ParameterType::STRING]
-                ],
-                [
-                    $sqlFindPoster,
-                    ['md5' => md5('poster2')],
-                    ['md5' => ParameterType::STRING]
-                ],
-                [
-                    $sqlFindPoster,
-                    ['md5' => md5('poster13')],
-                    ['md5' => ParameterType::STRING]
-                ]
-            )
-            ->willReturnOnConsecutiveCalls(false, false, ['id' => 1]);
 
         $this->connection
             ->expects(self::exactly(2))
-            ->method('lastInsertId')
-            ->willReturnOnConsecutiveCalls(1, 2);
-
-        $this->connection
-            ->expects(self::exactly(5))
             ->method('executeStatement')
             ->withConsecutive(
                 [
-                    $sqlInsertPoster,
-                    [
-                        'md5' => md5('poster13'),
-                        'url' => 'poster13',
-                    ],
-                    $typesInsertPoster
-                ],
-                [
                     $sqlReplacePublication,
                     [
-                        'externalId' => 'externId1',
+                        'externalId' => 'externalId1',
                         'title' => 'title1',
                         'year' => 2001,
                         'type' => 'type1',
-                        'poster_id' => 1
+                        'poster_id' => null
                     ],
                     $typesReplacePublication
                 ],
                 [
-                    $sqlInsertPoster,
-                    [
-                        'md5' => md5('poster2'),
-                        'url' => 'poster2',
-                    ],
-                    $typesInsertPoster
-                ],
-                [
                     $sqlReplacePublication,
                     [
-                        'externalId' => 'externId2',
+                        'externalId' => 'externalId2',
                         'title' => 'title2',
                         'year' => 2002,
                         'type' => 'type2',
                         'poster_id' => 2
                     ],
                     $typesReplacePublication
-                ],
-                [
-                    $sqlReplacePublication,
-                    [
-                        'externalId' => 'externId3',
-                        'title' => 'title3',
-                        'year' => 2003,
-                        'type' => 'type3',
-                        'poster_id' => 1
-                    ],
-                    $typesReplacePublication
                 ]
             );
 
         // WHEN
-        $this->storage->save($publications);
-    }
-
-    protected function mockDbConnection(): mixed
-    {
-        return self::getMockBuilder(Connection::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->storage->save($publications[0]);
+        $this->storage->save($publications[1]);
     }
 }

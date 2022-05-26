@@ -8,7 +8,6 @@ use App\api\Model\PublicationModel;
 use App\api\Model\PublicationModelCollection;
 use App\api\Model\PublicationModelFactory;
 use App\api\PublicationServiceImpl;
-use App\Tests\api\Repository\PublicationRepositorySpy;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
@@ -17,7 +16,7 @@ class PublicationServiceImplTest extends TestCase
     const TITLE_SEARCH = 'some title';
 
     protected PublicationExternGatewayFake $externGateway;
-    protected PublicationRepositorySpy $localStorage;
+    protected PublicationInternalStoreSpy $internalStorage;
     protected PublicationServiceImpl $service;
     protected PublicationModelFactory $pblFactory;
 
@@ -30,11 +29,11 @@ class PublicationServiceImplTest extends TestCase
     {
         parent::setUp();
         $this->externGateway = new PublicationExternGatewayFake();
-        $this->localStorage = new PublicationRepositorySpy();
+        $this->internalStorage = new PublicationInternalStoreSpy();
         $this->pblFactory = new PublicationModelFactory();
         $this->service = new PublicationServiceImpl(
             $this->externGateway,
-            $this->localStorage,
+            $this->internalStorage,
             new NullLogger()
         );
 
@@ -80,7 +79,7 @@ class PublicationServiceImplTest extends TestCase
         self::assertEquals(new PublicationModelCollection(), $result);
         self::assertEquals(
             null,
-            $this->localStorage->spySavedItems()
+            $this->internalStorage->spySavedItems()
         );
     }
 
@@ -93,7 +92,7 @@ class PublicationServiceImplTest extends TestCase
                 ->addItem($this->publicationA)
                 ->addItem($this->publicationB)
         );
-        $this->localStorage->setFakeFindByTitle(
+        $this->internalStorage->setFakeFindByTitle(
             self::TITLE_SEARCH,
             new PublicationModelCollection()
         );
@@ -112,7 +111,7 @@ class PublicationServiceImplTest extends TestCase
             (new PublicationModelCollection())
                 ->addItem($this->publicationA)
                 ->addItem($this->publicationB),
-            $this->localStorage->spySavedItems()
+            $this->internalStorage->spySavedItems()
         );
     }
 
@@ -125,7 +124,7 @@ class PublicationServiceImplTest extends TestCase
                 ->addItem($this->publicationA)
                 ->addItem($this->publicationB)
         );
-        $this->localStorage->setFakeFindByTitle(
+        $this->internalStorage->setFakeFindByTitle(
             self::TITLE_SEARCH,
             (new PublicationModelCollection())
                 ->addItem($this->publicationA)
@@ -144,7 +143,7 @@ class PublicationServiceImplTest extends TestCase
         );
         self::assertSame(
             null,
-            $this->localStorage->spySavedItems()
+            $this->internalStorage->spySavedItems()
         );
     }
 
@@ -155,7 +154,7 @@ class PublicationServiceImplTest extends TestCase
             self::TITLE_SEARCH,
             new UnexpectedExternalPublicationsException()
         );
-        $this->localStorage->setFakeFindByTitle(
+        $this->internalStorage->setFakeFindByTitle(
             self::TITLE_SEARCH,
             (new PublicationModelCollection())
                 ->addItem($this->publicationA)
@@ -174,7 +173,7 @@ class PublicationServiceImplTest extends TestCase
         );
         self::assertSame(
             null,
-            $this->localStorage->spySavedItems()
+            $this->internalStorage->spySavedItems()
         );
     }
 
@@ -188,7 +187,7 @@ class PublicationServiceImplTest extends TestCase
                 ->addItem($this->publicationB)
                 ->addItem($this->publicationC)
         );
-        $this->localStorage->setFakeFindByTitle(
+        $this->internalStorage->setFakeFindByTitle(
             self::TITLE_SEARCH,
             (new PublicationModelCollection())
                 ->addItem($this->publicationB)
@@ -211,7 +210,7 @@ class PublicationServiceImplTest extends TestCase
             (new PublicationModelCollection())
                 ->addItem($this->publicationA)
                 ->addItem($this->publicationC),
-            $this->localStorage->spySavedItems()
+            $this->internalStorage->spySavedItems()
         );
     }
 }

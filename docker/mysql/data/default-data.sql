@@ -11,7 +11,7 @@ CREATE TABLE publications (
     title VARCHAR(256) NOT NULL,
     year CHAR(50) NOT NULL,
     type varchar(50) NOT NULL,
-    poster_id INT NOT NULL,
+    poster_id INT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY(externalId),
     CONSTRAINT unique_externalId UNIQUE (externalId),
