@@ -31,7 +31,7 @@ class PublicationModel implements \JsonSerializable
             'externalId' => $this->externalId,
             'type' => $this->type,
             'title' => $this->tittle,
-            'year' => $this->year,
+            'year' => $this->year ?? null,
             'poster' => $this->poster ?? null,
         ];
     }
