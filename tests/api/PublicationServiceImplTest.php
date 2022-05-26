@@ -8,6 +8,7 @@ use App\api\Model\PublicationModel;
 use App\api\Model\PublicationModelCollection;
 use App\api\Model\PublicationModelFactory;
 use App\api\PublicationServiceImpl;
+use App\Tests\api\Repository\PublicationRepositorySpy;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
@@ -16,7 +17,7 @@ class PublicationServiceImplTest extends TestCase
     const TITLE_SEARCH = 'some title';
 
     protected PublicationExternGatewayFake $externGateway;
-    protected PublicationLocalStorageSpy $localStorage;
+    protected PublicationRepositorySpy $localStorage;
     protected PublicationServiceImpl $service;
     protected PublicationModelFactory $pblFactory;
 
@@ -29,7 +30,7 @@ class PublicationServiceImplTest extends TestCase
     {
         parent::setUp();
         $this->externGateway = new PublicationExternGatewayFake();
-        $this->localStorage = new PublicationLocalStorageSpy();
+        $this->localStorage = new PublicationRepositorySpy();
         $this->pblFactory = new PublicationModelFactory();
         $this->service = new PublicationServiceImpl(
             $this->externGateway,

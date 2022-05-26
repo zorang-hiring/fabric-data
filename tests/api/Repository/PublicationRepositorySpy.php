@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Tests\api;
+namespace App\Tests\api\Repository;
 
 use App\api\Model\PublicationModelCollection;
-use App\api\PublicationLocalStorage;
+use App\api\Repository\PublicationRepository;
 
-class PublicationLocalStorageSpy implements PublicationLocalStorage
+class PublicationRepositorySpy implements PublicationRepository
 {
     protected PublicationModelCollection $spyStored;
     protected array $fakeFindByTitle = [];

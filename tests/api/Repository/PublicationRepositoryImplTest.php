@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Tests\api;
+namespace App\Tests\api\Repository;
 
 use App\api\Model\PublicationModelCollection;
 use App\api\Model\PublicationModelFactory;
-use App\api\PublicationLocalStorageImpl;
+use App\api\Repository\PublicationRepositoryImpl;
 use Doctrine\DBAL\ParameterType;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Doctrine\DBAL\Connection;
 
-class PublicationLocalStorageImplTest extends TestCase
+class PublicationRepositoryImplTest extends TestCase
 {
-    protected PublicationLocalStorageImpl $storage;
+    protected PublicationRepositoryImpl $storage;
     protected Connection|MockObject $connection;
     protected PublicationModelFactory $modelFactory;
     
@@ -22,7 +22,7 @@ class PublicationLocalStorageImplTest extends TestCase
         parent::setUp();
         $this->modelFactory = new PublicationModelFactory();
         $this->connection = $this->mockDbConnection();
-        $this->storage = new PublicationLocalStorageImpl(
+        $this->storage = new PublicationRepositoryImpl(
             $this->connection,
             $this->modelFactory
         );

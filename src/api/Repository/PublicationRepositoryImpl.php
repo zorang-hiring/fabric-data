@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace App\api;
+namespace App\api\Repository;
 
 use App\api\Model\PublicationModelCollection;
 use App\api\Model\PublicationModelFactory;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 
-class PublicationLocalStorageImpl implements PublicationLocalStorage
+class PublicationRepositoryImpl implements PublicationRepository
 {
     public function __construct(
         protected Connection $connection,
@@ -18,6 +18,8 @@ class PublicationLocalStorageImpl implements PublicationLocalStorage
     public function save(PublicationModelCollection $publications): void
     {
         foreach ($publications->getAll() as $publication) {
+
+
             $this->connection->executeStatement(
                 "REPLACE into publications (externalId, title, year, type, poster) values "
                 . "(:externalId, :title, :year, :type, :poster)",

@@ -7,7 +7,7 @@ use App\api\Model\PublicationModel;
 use App\api\Model\PublicationModelFactory;
 use PHPUnit\Framework\TestCase;
 
-class PublicationDtoFactoryTest extends TestCase
+class PublicationModelFactoryTest extends TestCase
 {
 
     public function testMakeOne()

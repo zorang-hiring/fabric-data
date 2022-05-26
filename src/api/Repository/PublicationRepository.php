@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace App\api;
+namespace App\api\Repository;
 
 use App\api\Model\PublicationModelCollection;
 
-interface PublicationLocalStorage
+interface PublicationRepository
 {
     public function save(PublicationModelCollection $publications): void;
 

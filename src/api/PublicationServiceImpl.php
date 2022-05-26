@@ -5,14 +5,15 @@ namespace App\api;
 
 use App\api\Exception\UnexpectedExternalPublicationsException;
 use App\api\Model\PublicationModelCollection;
+use App\api\Repository\PublicationRepository;
 use Psr\Log\LoggerInterface;
 
 class PublicationServiceImpl implements PublicationService
 {
     public function __construct(
         protected PublicationExternGateway $externGateway,
-        protected PublicationLocalStorage $localStorage,
-        protected ?LoggerInterface $logger = null
+        protected PublicationRepository    $localStorage,
+        protected ?LoggerInterface         $logger = null
     ){}
 
     public function handle(string $filterByTitle): PublicationModelCollection

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\api;
 
 use App\api\Model\PublicationModelFactory;
+use App\api\Repository\PublicationRepositoryImpl;
 use Doctrine\DBAL\DriverManager;
 use GuzzleHttp\Client;
 use Slim\Factory\AppFactory;
@@ -22,7 +23,7 @@ $controller = new PublicationController(
             new Client(),
             (string) $_ENV['APP_3RD_PARTY_PUBLICATIONS_API_KEY']
         ),
-        new PublicationLocalStorageImpl(
+        new PublicationRepositoryImpl(
             DriverManager::getConnection([
                 'password' => (string) $_ENV['MYSQL_PASSWORD'],
                 'user' => (string) $_ENV['MYSQL_USER'],

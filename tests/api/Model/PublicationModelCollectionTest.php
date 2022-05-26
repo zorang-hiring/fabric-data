@@ -8,7 +8,7 @@ use App\api\Model\PublicationModelCollection;
 use App\api\Model\PublicationModelFactory;
 use PHPUnit\Framework\TestCase;
 
-class PublicationDtoCollectionTest extends TestCase
+class PublicationModelCollectionTest extends TestCase
 {
     protected PublicationModelFactory $factory;
 
