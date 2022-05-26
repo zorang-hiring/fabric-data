@@ -11,7 +11,9 @@ use Slim\Factory\AppFactory;
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 // init Server
-$server = AppFactory::create();
+$app = AppFactory::create();
+$app->addRoutingMiddleware();
+$app->addErrorMiddleware(false, true, true);
 
 // init Controller
 $controller = new PublicationController(
@@ -34,11 +36,6 @@ $controller = new PublicationController(
 );
 
 // configure route
-$server->get('/api/publications', $controller);
+$app->get('/api/publications', $controller);
 
-// default route
-//$server->options('/{routes:.+}', function ($request, $response, $args) {
-//    return $response;
-//});
-
-$server->run();
+$app->run();
