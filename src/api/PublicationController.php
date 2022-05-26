@@ -13,9 +13,10 @@ class PublicationController
 
     public function __invoke(Request $request, Response $response)
     {
-        $result = $this->service->handle(
-            (string) $request->getAttribute('q')
-        );
+
+        $query = $request->getQueryParams()['q'] ?? '';
+
+        $result = $this->service->handle($query);
 
         return $this->buildResponse($response, $result);
     }
