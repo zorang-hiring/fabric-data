@@ -11,9 +11,19 @@ class PublicationRepositorySpy implements PublicationRepository
 {
     protected array $searchByTitle = [];
 
+    protected array $savedPublications = [];
+
     public function save(PublicationRepositorySaveDto $publication): void
     {
-        // TODO: Implement save() method.
+        $this->savedPublications[] = $publication;
+    }
+
+    /**
+     * @return PublicationRepositorySaveDto[]
+     */
+    public function getSavedPublications(): array
+    {
+        return $this->savedPublications;
     }
 
     public function searchByTitle(string $filterByTitle): PublicationModelCollection
