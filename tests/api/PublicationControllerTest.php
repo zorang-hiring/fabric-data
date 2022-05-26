@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Tests\api;
 
 use App\api\PublicationController;
+use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
 
@@ -23,14 +24,13 @@ class PublicationControllerTest extends TestCase
 
     public function testHandle()
     {
+        // GIVEN
+        $request = (new ServerRequest('GET', 'https://some.com'));
+        $request = $request->withQueryParams(['q' => 'some title']);
+
         // WHEN
         $controller = $this->controller;
-        $controller(
-            (new ServerRequest('GET', 'https://some.com'))
-                ->withAttribute('q', 'some title')
-            ,
-            $response = new \GuzzleHttp\Psr7\Response()
-        );
+        $controller($request, $response = new Response());
 
         // THEN
         self::assertSame(200, $response->getStatusCode());
