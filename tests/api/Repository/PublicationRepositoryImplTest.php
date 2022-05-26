@@ -113,9 +113,6 @@ class PublicationRepositoryImplTest extends TestCase
 
 
         // EXPECTED
-        $typesFindPoster = [
-            'md5' => ParameterType::STRING
-        ];
         $sqlFindPoster = "SELECT id FROM posters WHERE md5 = :md5";
         $typesInsertPoster = [
             'md5' => ParameterType::STRING,
@@ -140,17 +137,17 @@ class PublicationRepositoryImplTest extends TestCase
                 [
                     $sqlFindPoster,
                     ['md5' => md5('poster13')],
-                    $typesFindPoster
+                    ['md5' => ParameterType::STRING]
                 ],
                 [
                     $sqlFindPoster,
                     ['md5' => md5('poster2')],
-                    $typesFindPoster
+                    ['md5' => ParameterType::STRING]
                 ],
                 [
                     $sqlFindPoster,
                     ['md5' => md5('poster13')],
-                    $typesFindPoster
+                    ['md5' => ParameterType::STRING]
                 ]
             )
             ->willReturnOnConsecutiveCalls(false, false, ['id' => 1]);
