@@ -15,31 +15,38 @@ class PublicationInternalStoreImpl implements PublicationInternalStore
         protected PosterRepository $posterRepo,
     ){}
 
+    public function searchByTitle(string $filterByTitle): PublicationModelCollection
+    {
+        return $this->publicationRepo->searchByTitle($filterByTitle);
+    }
+
     public function storeNewPublications(PublicationModelCollection $publications): void
     {
         foreach ($publications->getAll() as $publication) {
-
-            $posterId = null;
-            if (
-                $publication->poster
-                && !$posterId = $this->posterRepo->findPosterId($publication->poster)
-            ) {
-                $posterId = $this->posterRepo->insertPoster($publication->poster);
-            }
-
             $this->publicationRepo->save($this->makePublication([
                 'externalId' => $publication->externalId,
                 'type' => $publication->type,
                 'title' => $publication->tittle,
                 'year' => $publication->year,
-                'posterId' => $posterId,
+                'posterId' => $this->handlePoster($publication->poster),
             ]));
         }
     }
 
-    public function searchByTitle(string $filterByTitle): PublicationModelCollection
+    /**
+     * @param string|null $posterUrl
+     * @return int|null Will return poster ID of existing poster or just inserted poster
+     */
+    protected function handlePoster(?string $posterUrl): ?int
     {
-        return $this->publicationRepo->searchByTitle($filterByTitle);
+        $posterId = null;
+        if (
+            $posterUrl
+            && !$posterId = $this->posterRepo->findPosterId($posterUrl)
+        ) {
+            $posterId = $this->posterRepo->insertPoster($posterUrl);
+        }
+        return $posterId;
     }
 
     private function makePublication(array $data): PublicationRepositorySaveDto
