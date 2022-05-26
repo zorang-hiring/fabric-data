@@ -14,7 +14,7 @@ class PublicationInternalStoreImpl implements PublicationInternalStore
         protected PosterRepository $posterRepo,
     ){}
 
-    public function store(PublicationModelCollection $publications): void
+    public function storeNewPublications(PublicationModelCollection $publications): void
     {
 
     }
@@ -68,27 +68,8 @@ class PublicationInternalStoreImpl implements PublicationInternalStore
 //        }
 //    }
 //
-//    public function searchByTitle(string $filterByTitle): PublicationModelCollection
-//    {
-//        $result = $this->connection->fetchAllAssociative(
-//            "SELECT pu.externalId, pu.title, pu.year, pu.type, po.url as poster "
-//            . "FROM publications pu "
-//            . "LEFT JOIN posters po ON pu.poster_id = po.id"
-//            . "WHERE pu.title LIKE '%:title%'",
-//            ['title' => $filterByTitle],
-//            ['title' => ParameterType::STRING]
-//        );
-//
-//        $return = new PublicationModelCollection();
-//        foreach ($result as $row) {
-//            $return->addItem($this->factory->makeOne([
-//                'externalId' => $row['externalId'],
-//                'title' => $row['title'],
-//                'year' => $row['year'],
-//                'type' => $row['type'],
-//                'poster' => $row['poster'],
-//            ]));
-//        }
-//        return $return;
-//    }
+    public function searchByTitle(string $filterByTitle): PublicationModelCollection
+    {
+        return $this->publicationRepo->searchByTitle($filterByTitle);
+    }
 }

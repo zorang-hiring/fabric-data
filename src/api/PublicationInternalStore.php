@@ -7,5 +7,7 @@ use App\api\Model\PublicationModelCollection;
 
 interface PublicationInternalStore
 {
-    public function store(PublicationModelCollection $publications): void;
+    public function storeNewPublications(PublicationModelCollection $publications): void;
+
+    public function searchByTitle(string $filterByTitle): PublicationModelCollection;
 }

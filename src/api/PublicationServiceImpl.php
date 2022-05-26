@@ -5,7 +5,6 @@ namespace App\api;
 
 use App\api\Exception\UnexpectedExternalPublicationsException;
 use App\api\Model\PublicationModelCollection;
-use App\api\Repository\PublicationRepository;
 use Psr\Log\LoggerInterface;
 
 class PublicationServiceImpl implements PublicationService
@@ -21,10 +20,11 @@ class PublicationServiceImpl implements PublicationService
         $externalResult = $this->searchExternalPublications($filterByTitle);
         $localResult = $this->internalStorage->searchByTitle($filterByTitle);
 
-        if (count($toSave = $this->getItemsToSaveLocally($externalResult, $localResult))) {
-            $this->internalStorage->store($toSave);
+        if (count($newPublications = $this->getItemsToSaveLocally($externalResult, $localResult))) {
+            $this->internalStorage->storeNewPublications($newPublications);
         }
 
+        // return old and new publications
         return $this->joinWithUnique($externalResult, $localResult);
     }
 

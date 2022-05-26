@@ -5,7 +5,6 @@ namespace App\Tests\api;
 
 use App\api\Model\PublicationModelCollection;
 use App\api\PublicationInternalStore;
-use App\api\Repository\PublicationRepositorySaveDto;
 
 class PublicationInternalStoreSpy implements PublicationInternalStore
 {
@@ -23,7 +22,7 @@ class PublicationInternalStoreSpy implements PublicationInternalStore
         return null;
     }
 
-    public function store(PublicationModelCollection $publications): void
+    public function storeNewPublications(PublicationModelCollection $publications): void
     {
         $this->spyStored = $publications;
     }
