@@ -25,9 +25,9 @@ class PublicationInternalStoreImpl implements PublicationInternalStore
         foreach ($publications->getAll() as $publication) {
             $this->publicationRepo->save($this->makePublication([
                 'externalId' => $publication->externalId,
-                'type' => $publication->type,
-                'title' => $publication->tittle,
-                'year' => $publication->year,
+                'type' => $publication->type ?? '',
+                'title' => $publication->tittle ?? '',
+                'year' => $publication->year ?? null,
                 'posterId' => $this->handlePoster($publication->poster),
             ]));
         }

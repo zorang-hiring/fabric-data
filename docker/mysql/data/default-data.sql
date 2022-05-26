@@ -9,7 +9,7 @@ CREATE TABLE posters (
 CREATE TABLE publications (
     externalId VARCHAR(50) NOT NULL,
     title VARCHAR(256) NOT NULL,
-    year CHAR(50) NOT NULL,
+    year CHAR(50) NULL,
     type varchar(50) NOT NULL,
     poster_id INT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
