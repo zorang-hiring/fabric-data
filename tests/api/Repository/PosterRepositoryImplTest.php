@@ -37,7 +37,7 @@ class PosterRepositoryImplTest extends AbstractRepositoryTestCase
                     ['md5' => ParameterType::STRING]
                 ]
             )
-            ->willReturnOnConsecutiveCalls(false, ['id' => 55]);
+            ->willReturnOnConsecutiveCalls(false, 55);
 
         // WHEN, THEN
         self::assertSame(null, $this->repo->findPosterId('url1'));

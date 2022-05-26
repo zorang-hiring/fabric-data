@@ -21,7 +21,7 @@ class PosterRepositoryImpl implements PosterRepository
             ['md5' => ParameterType::STRING]
         );
 
-        return $result['id'] ?? null;
+        return !empty($result) ? (int) $result : null;
     }
 
     public function insertPoster(string $url): int
@@ -42,6 +42,6 @@ class PosterRepositoryImpl implements PosterRepository
             throw new PosterRepositoryInsertException();
         }
 
-        return $id;
+        return (int) $id;
     }
 }

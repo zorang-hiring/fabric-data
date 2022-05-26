@@ -42,7 +42,7 @@ class PublicationRepositoryImpl implements PublicationRepository
         $result = $this->connection->fetchAllAssociative(
             "SELECT pu.externalId, pu.title, pu.year, pu.type, po.url as poster "
             . "FROM publications pu "
-            . "LEFT JOIN posters po ON pu.poster_id = po.id"
+            . "LEFT JOIN posters po ON pu.poster_id = po.id "
             . "WHERE pu.title LIKE '%:title%'",
             ['title' => $filterByTitle],
             ['title' => ParameterType::STRING]
