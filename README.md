@@ -52,4 +52,5 @@ After composer install in step 1, you can run tests:
 
 `./vendor/bin/phpunit tests`
 
-API CODE COVERAGE IS 100%!
+API CODE COVERAGE IS 100%! 
+SEE https://take.ms/xFXxu 
