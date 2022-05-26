@@ -94,7 +94,7 @@ class PublicationRepositoryImplTest extends TestCase
                 'type' => 'type1',
                 'title' => 'title1',
                 'year' => '2001',
-                'poster' => 'poster1',
+                'poster' => 'poster13',
             ]))
             ->addItem($this->modelFactory->makeOne([
                 'externalId' => 'externId2',
@@ -102,43 +102,98 @@ class PublicationRepositoryImplTest extends TestCase
                 'title' => 'title2',
                 'year' => '2002',
                 'poster' => 'poster2'
-            ]));
+            ]))
+            ->addItem($this->modelFactory->makeOne([
+                'externalId' => 'externId3',
+                'type' => 'type3',
+                'title' => 'title3',
+                'year' => '2003',
+                'poster' => 'poster13'
+            ]));;
+
 
         // EXPECTED
-        $dataTypes = [
+        $typesInsertPoster = [
+            'md5' => ParameterType::STRING,
+            'url' => ParameterType::STRING,
+        ];
+        $sqlInsertPoster = "INSERT INTO posters (md5, url) values (:md5, :url)";
+        $typesReplacePublication = [
             'externalId' => ParameterType::STRING,
             'title' => ParameterType::STRING,
             'year' => ParameterType::STRING,
             'type' => ParameterType::STRING,
-            'poster' => ParameterType::STRING
+            'poster_id' => ParameterType::INTEGER
         ];
-        $sql = "REPLACE into publications (externalId, title, year, type, poster) values "
-            . "(:externalId, :title, :year, :type, :poster)";
+        $sqlReplacePublication =
+            "REPLACE INTO publications (externalId, title, year, type, poster_id) values "
+            . "(:externalId, :title, :year, :type, :poster_id)";
+
         $this->connection
-            ->expects(self::exactly(2))
+            ->expects(self::exactly(3))
+            ->method('lastInsertId')
+            ->willReturnOnConsecutiveCalls(1, 2, 3);
+
+        $this->connection
+            ->expects(self::exactly(6))
             ->method('executeStatement')
             ->withConsecutive(
                 [
-                    $sql,
+                    $sqlInsertPoster,
+                    [
+                        'md5' => md5('poster13'),
+                        'url' => 'poster13',
+                    ],
+                    $typesInsertPoster
+                ],
+                [
+                    $sqlReplacePublication,
                     [
                         'externalId' => 'externId1',
                         'title' => 'title1',
-                        'year' => '2001',
+                        'year' => 2001,
                         'type' => 'type1',
-                        'poster' => 'poster1'
+                        'poster_id' => 1
                     ],
-                    $dataTypes
+                    $typesReplacePublication
                 ],
                 [
-                    $sql,
+                    $sqlInsertPoster,
+                    [
+                        'md5' => md5('poster2'),
+                        'url' => 'poster2',
+                    ],
+                    $typesInsertPoster
+                ],
+                [
+                    $sqlReplacePublication,
                     [
                         'externalId' => 'externId2',
                         'title' => 'title2',
-                        'year' => '2002',
+                        'year' => 2002,
                         'type' => 'type2',
-                        'poster' => 'poster2'
+                        'poster_id' => 2
                     ],
-                    $dataTypes
+                    $typesReplacePublication
+                ],
+                [
+                    $sqlInsertPoster,
+                    [
+                        'md5' => md5('poster13'),
+                        'url' => 'poster13',
+                    ],
+                    $typesInsertPoster
+                ],
+                [
+                    $sqlReplacePublication,
+                    [
+                        'externalId' => 'externId3',
+                        'title' => 'title3',
+                        'year' => 2003,
+                        'type' => 'type3',
+                        'poster_id' => 3
+                    ],
+                    $typesReplacePublication
                 ]
             );
 

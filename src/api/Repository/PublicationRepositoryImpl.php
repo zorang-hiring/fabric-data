@@ -17,25 +17,39 @@ class PublicationRepositoryImpl implements PublicationRepository
 
     public function save(PublicationModelCollection $publications): void
     {
+        // todo use transaction
         foreach ($publications->getAll() as $publication) {
 
+            $this->connection->executeStatement(
+                "INSERT INTO posters (md5, url) values (:md5, :url)",
+                [
+                    'md5' => md5($publication->poster),
+                    'url' => $publication->poster,
+                ],
+                [
+                    'md5' => ParameterType::STRING,
+                    'url' => ParameterType::STRING,
+                ]
+            );
+
+            $posterId = $this->connection->lastInsertId();
 
             $this->connection->executeStatement(
-                "REPLACE into publications (externalId, title, year, type, poster) values "
-                . "(:externalId, :title, :year, :type, :poster)",
+                "REPLACE INTO publications (externalId, title, year, type, poster_id) values "
+                . "(:externalId, :title, :year, :type, :poster_id)",
                 [
                     'externalId' => $publication->externalId,
                     'title' => $publication->tittle,
                     'year' => $publication->year,
                     'type' => $publication->type,
-                    'poster' => $publication->poster
+                    'poster_id' => $posterId
                 ],
                 [
                     'externalId' => ParameterType::STRING,
                     'title' => ParameterType::STRING,
                     'year' => ParameterType::STRING,
                     'type' => ParameterType::STRING,
-                    'poster' => ParameterType::STRING
+                    'poster_id' => ParameterType::INTEGER
                 ]
             );
         }
