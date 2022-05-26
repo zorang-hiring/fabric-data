@@ -29,7 +29,7 @@ class PublicationServiceImpl implements PublicationService
 
         $result = new PublicationDtoCollection();
         foreach ($externalResult->getAll() as $externItem) {
-            if (!$localResult->hasWithSameExternalId($externItem)) {
+            if (!$localResult->hasEqual($externItem)) {
                 $result->addItem($externItem);
             }
         }
@@ -43,7 +43,7 @@ class PublicationServiceImpl implements PublicationService
     {
         $toReturn = clone $externalResult;
         foreach ($localResult->getAll() as $localItem) {
-            if (!$toReturn->hasWithSameExternalId($localItem)) {
+            if (!$toReturn->hasEqual($localItem)) {
                 $toReturn->addItem($localItem);
             }
         }

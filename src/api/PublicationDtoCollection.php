@@ -26,10 +26,10 @@ class PublicationDtoCollection implements \Countable
         return $this->publications;
     }
 
-    public function hasWithSameExternalId(PublicationDto $publicationDto)
+    public function hasEqual(PublicationDto $publication)
     {
         foreach ($this->getAll() as $item) {
-            if ($item->externalId == $publicationDto->externalId) {
+            if ($item->isEqual($publication)) {
                 return true;
             }
         }
