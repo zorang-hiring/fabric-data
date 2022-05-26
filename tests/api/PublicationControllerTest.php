@@ -6,9 +6,6 @@ namespace App\Tests\api;
 use App\api\PublicationController;
 use GuzzleHttp\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use SHaus\TppAuthCmp\User;
 
 class PublicationControllerTest extends TestCase
 {
