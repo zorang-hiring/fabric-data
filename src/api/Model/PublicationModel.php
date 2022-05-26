@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\api\Model;
 
-class PublicationDto implements \JsonSerializable
+class PublicationModel implements \JsonSerializable
 {
     public string $externalId;
     public string $type;
@@ -11,7 +11,7 @@ class PublicationDto implements \JsonSerializable
     public int $year;
     public ?string $poster;
 
-    public function isEqual(PublicationDto $publication)
+    public function isEqual(PublicationModel $publication)
     {
         if (
             $this->externalId == $publication->externalId

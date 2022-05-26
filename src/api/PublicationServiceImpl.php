@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\api;
 
 use App\api\Exception\UnexpectedExternalPublicationsException;
-use App\api\Model\PublicationDtoCollection;
+use App\api\Model\PublicationModelCollection;
 use Psr\Log\LoggerInterface;
 
 class PublicationServiceImpl implements PublicationService
@@ -15,7 +15,7 @@ class PublicationServiceImpl implements PublicationService
         protected ?LoggerInterface $logger = null
     ){}
 
-    public function handle(string $filterByTitle): PublicationDtoCollection
+    public function handle(string $filterByTitle): PublicationModelCollection
     {
         $externalResult = $this->searchExternalPublications($filterByTitle);
         $localResult = $this->localStorage->searchByTitle($filterByTitle);
@@ -27,7 +27,7 @@ class PublicationServiceImpl implements PublicationService
         return $this->joinWithUnique($externalResult, $localResult);
     }
 
-    protected function searchExternalPublications(string $filterByTitle): PublicationDtoCollection
+    protected function searchExternalPublications(string $filterByTitle): PublicationModelCollection
     {
         try {
             $externalResult = $this->externGateway->search($filterByTitle);
@@ -35,17 +35,17 @@ class PublicationServiceImpl implements PublicationService
             // if external publications can not be obtained then log warning and return empty
             // publications to avoid braking if frontend
             $this->logger?->warning('Unexpected external gateway result');
-            $externalResult = new PublicationDtoCollection();
+            $externalResult = new PublicationModelCollection();
         }
         return $externalResult;
     }
 
     protected function getItemsToSaveLocally(
-        PublicationDtoCollection $externalResult,
-        PublicationDtoCollection $localResult
-    ): PublicationDtoCollection {
+        PublicationModelCollection $externalResult,
+        PublicationModelCollection $localResult
+    ): PublicationModelCollection {
 
-        $result = new PublicationDtoCollection();
+        $result = new PublicationModelCollection();
         foreach ($externalResult->getAll() as $externItem) {
             if (!$localResult->hasEqual($externItem)) {
                 $result->addItem($externItem);
@@ -55,9 +55,9 @@ class PublicationServiceImpl implements PublicationService
     }
 
     protected function joinWithUnique(
-        PublicationDtoCollection $externalResult,
-        PublicationDtoCollection $localResult
-    ): PublicationDtoCollection
+        PublicationModelCollection $externalResult,
+        PublicationModelCollection $localResult
+    ): PublicationModelCollection
     {
         $toReturn = clone $externalResult;
         foreach ($localResult->getAll() as $localItem) {

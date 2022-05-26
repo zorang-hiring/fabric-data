@@ -4,19 +4,19 @@ declare(strict_types=1);
 namespace App\Tests\api;
 
 use App\api\Exception\UnexpectedExternalPublicationsException;
-use App\api\Model\PublicationDtoCollection;
+use App\api\Model\PublicationModelCollection;
 use App\api\PublicationExternGateway;
 
 class PublicationExternGatewayFake implements PublicationExternGateway
 {
     protected array $fakeResults = [];
 
-    public function setFakeResult($forTitle, PublicationDtoCollection|UnexpectedExternalPublicationsException $willReturn)
+    public function setFakeResult($forTitle, PublicationModelCollection|UnexpectedExternalPublicationsException $willReturn)
     {
         $this->fakeResults[$forTitle] = $willReturn;
     }
 
-    public function search(string $title): PublicationDtoCollection
+    public function search(string $title): PublicationModelCollection
     {
         if (array_key_exists($title, $this->fakeResults)) {
             $result = $this->fakeResults[$title];

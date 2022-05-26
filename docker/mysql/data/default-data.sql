@@ -13,5 +13,6 @@ CREATE TABLE posters
 (
     id INT AUTO_INCREMENT NOT NULL,
     url VARCHAR(1024) NOT NULL,
-    PRIMARY KEY(id)
+    PRIMARY KEY(id),
+    CONSTRAINT unique_url UNIQUE (url)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB;

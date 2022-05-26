@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace App\api\Model;
 
-class PublicationDtoFactory
+class PublicationModelFactory
 {
     public function makeOne(
         array $data
-    ): PublicationDto {
-        $p = new PublicationDto();
+    ): PublicationModel {
+        $p = new PublicationModel();
         if (array_key_exists('externalId', $data)) {
             $p->externalId = $data['externalId'];
         }

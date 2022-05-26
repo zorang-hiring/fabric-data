@@ -4,23 +4,23 @@ declare(strict_types=1);
 namespace App\api;
 
 use App\api\Exception\UnexpectedExternalPublicationsException;
-use App\api\Model\PublicationDto;
-use App\api\Model\PublicationDtoCollection;
-use App\api\Model\PublicationDtoFactory;
+use App\api\Model\PublicationModel;
+use App\api\Model\PublicationModelCollection;
+use App\api\Model\PublicationModelFactory;
 use GuzzleHttp\ClientInterface;
 
 class PublicationExternGatewayImpl implements PublicationExternGateway
 {
-    protected PublicationDtoFactory $publicationFactory;
+    protected PublicationModelFactory $publicationFactory;
 
     public function __construct(
         protected ClientInterface $client,
         protected string $apiKey
     ){
-        $this->publicationFactory = new PublicationDtoFactory();
+        $this->publicationFactory = new PublicationModelFactory();
     }
 
-    public function search(string $title) : PublicationDtoCollection
+    public function search(string $title) : PublicationModelCollection
     {
         $response = $this->client->request(
             'get',
@@ -35,16 +35,16 @@ class PublicationExternGatewayImpl implements PublicationExternGateway
         return $this->buildResult($responseJson['Search']);
     }
 
-    protected function buildResult(array $externPublications): PublicationDtoCollection
+    protected function buildResult(array $externPublications): PublicationModelCollection
     {
-        $result = new PublicationDtoCollection();
+        $result = new PublicationModelCollection();
         foreach ($externPublications as $externPublication) {
             $result->addItem($this->buildPublication($externPublication));
         }
         return $result;
     }
 
-    protected function buildPublication(array $externPublication): PublicationDto
+    protected function buildPublication(array $externPublication): PublicationModel
     {
         return $this->publicationFactory->makeOne([
             'externalId' => $externPublication['imdbID'] ?? '',

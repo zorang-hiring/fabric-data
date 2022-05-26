@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Tests\api;
 
-use App\api\Model\PublicationDtoCollection;
-use App\api\Model\PublicationDtoFactory;
+use App\api\Model\PublicationModelCollection;
+use App\api\Model\PublicationModelFactory;
 use App\api\PublicationService;
 
 class PublicationServiceSpy implements PublicationService
@@ -16,12 +16,12 @@ class PublicationServiceSpy implements PublicationService
         return $this->filteredBy;
     }
 
-    public function handle(string $filterByTitle): PublicationDtoCollection
+    public function handle(string $filterByTitle): PublicationModelCollection
     {
         $this->filteredBy = $filterByTitle;
 
-        $factory = new PublicationDtoFactory();
-        return (new PublicationDtoCollection())
+        $factory = new PublicationModelFactory();
+        return (new PublicationModelCollection())
             ->addItem($factory->makeOne([
                 'externalId' => 'externId1',
                 'type' => 'type1',

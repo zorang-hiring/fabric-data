@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Tests\api;
 
-use App\api\Model\PublicationDtoCollection;
-use App\api\Model\PublicationDtoFactory;
+use App\api\Model\PublicationModelCollection;
+use App\api\Model\PublicationModelFactory;
 use App\api\PublicationLocalStorageImpl;
 use Doctrine\DBAL\ParameterType;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -15,12 +15,12 @@ class PublicationLocalStorageImplTest extends TestCase
 {
     protected PublicationLocalStorageImpl $storage;
     protected Connection|MockObject $connection;
-    protected PublicationDtoFactory $modelFactory;
+    protected PublicationModelFactory $modelFactory;
     
     protected function setUp(): void
     {
         parent::setUp();
-        $this->modelFactory = new PublicationDtoFactory();
+        $this->modelFactory = new PublicationModelFactory();
         $this->connection = $this->mockDbConnection();
         $this->storage = new PublicationLocalStorageImpl(
             $this->connection,
@@ -63,7 +63,7 @@ class PublicationLocalStorageImplTest extends TestCase
         // THEN
         self::assertEquals(
             $result,
-            (new PublicationDtoCollection())
+            (new PublicationModelCollection())
                 ->addItem($this->modelFactory->makeOne([
                     'externalId' => 'externId1',
                     'type' => 'type1',
@@ -84,7 +84,7 @@ class PublicationLocalStorageImplTest extends TestCase
     public function testSave()
     {
         // GIVEN
-        $publications = new PublicationDtoCollection();
+        $publications = new PublicationModelCollection();
         $publications
             ->addItem($this->modelFactory->makeOne([
                 'externalId' => 'externId1',

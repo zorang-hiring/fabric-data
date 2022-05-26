@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace App\Tests\api;
 
 use App\api\Exception\UnexpectedExternalPublicationsException;
-use App\api\Model\PublicationDto;
-use App\api\Model\PublicationDtoCollection;
-use App\api\Model\PublicationDtoFactory;
+use App\api\Model\PublicationModel;
+use App\api\Model\PublicationModelCollection;
+use App\api\Model\PublicationModelFactory;
 use App\api\PublicationServiceImpl;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
@@ -18,19 +18,19 @@ class PublicationServiceImplTest extends TestCase
     protected PublicationExternGatewayFake $externGateway;
     protected PublicationLocalStorageSpy $localStorage;
     protected PublicationServiceImpl $service;
-    protected PublicationDtoFactory $pblFactory;
+    protected PublicationModelFactory $pblFactory;
 
-    protected PublicationDto $publicationA;
-    protected PublicationDto $publicationB;
-    protected PublicationDto $publicationC;
-    protected PublicationDto $publicationD;
+    protected PublicationModel $publicationA;
+    protected PublicationModel $publicationB;
+    protected PublicationModel $publicationC;
+    protected PublicationModel $publicationD;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->externGateway = new PublicationExternGatewayFake();
         $this->localStorage = new PublicationLocalStorageSpy();
-        $this->pblFactory = new PublicationDtoFactory();
+        $this->pblFactory = new PublicationModelFactory();
         $this->service = new PublicationServiceImpl(
             $this->externGateway,
             $this->localStorage,
@@ -70,13 +70,13 @@ class PublicationServiceImplTest extends TestCase
     public function test_when_fetch_empty_store_and_has_nothing_locally_then_store_nothing_and_return_empty()
     {
         // GIVEN
-        $this->externGateway->setFakeResult(self::TITLE_SEARCH, new PublicationDtoCollection());
+        $this->externGateway->setFakeResult(self::TITLE_SEARCH, new PublicationModelCollection());
 
         // WHEN,
         $result = $this->service->handle(self::TITLE_SEARCH);
 
         // THEN
-        self::assertEquals(new PublicationDtoCollection(), $result);
+        self::assertEquals(new PublicationModelCollection(), $result);
         self::assertEquals(
             null,
             $this->localStorage->spySavedItems()
@@ -88,13 +88,13 @@ class PublicationServiceImplTest extends TestCase
         // GIVEN
         $this->externGateway->setFakeResult(
             self::TITLE_SEARCH,
-            (new PublicationDtoCollection())
+            (new PublicationModelCollection())
                 ->addItem($this->publicationA)
                 ->addItem($this->publicationB)
         );
         $this->localStorage->setFakeFindByTitle(
             self::TITLE_SEARCH,
-            new PublicationDtoCollection()
+            new PublicationModelCollection()
         );
 
         // WHEN
@@ -102,13 +102,13 @@ class PublicationServiceImplTest extends TestCase
 
         // THEN
         self::assertEquals(
-            (new PublicationDtoCollection())
+            (new PublicationModelCollection())
                 ->addItem($this->publicationA)
                 ->addItem($this->publicationB),
             $result
         );
         self::assertEquals(
-            (new PublicationDtoCollection())
+            (new PublicationModelCollection())
                 ->addItem($this->publicationA)
                 ->addItem($this->publicationB),
             $this->localStorage->spySavedItems()
@@ -120,13 +120,13 @@ class PublicationServiceImplTest extends TestCase
         // GIVEN
         $this->externGateway->setFakeResult(
             self::TITLE_SEARCH,
-            (new PublicationDtoCollection())
+            (new PublicationModelCollection())
                 ->addItem($this->publicationA)
                 ->addItem($this->publicationB)
         );
         $this->localStorage->setFakeFindByTitle(
             self::TITLE_SEARCH,
-            (new PublicationDtoCollection())
+            (new PublicationModelCollection())
                 ->addItem($this->publicationA)
                 ->addItem($this->publicationB)
         );
@@ -136,7 +136,7 @@ class PublicationServiceImplTest extends TestCase
 
         // THEN
         self::assertEquals(
-            (new PublicationDtoCollection())
+            (new PublicationModelCollection())
                 ->addItem($this->publicationA)
                 ->addItem($this->publicationB),
             $result
@@ -156,7 +156,7 @@ class PublicationServiceImplTest extends TestCase
         );
         $this->localStorage->setFakeFindByTitle(
             self::TITLE_SEARCH,
-            (new PublicationDtoCollection())
+            (new PublicationModelCollection())
                 ->addItem($this->publicationA)
                 ->addItem($this->publicationB)
         );
@@ -166,7 +166,7 @@ class PublicationServiceImplTest extends TestCase
 
         // THEN
         self::assertEquals(
-            (new PublicationDtoCollection())
+            (new PublicationModelCollection())
                 ->addItem($this->publicationA)
                 ->addItem($this->publicationB),
             $result
@@ -182,14 +182,14 @@ class PublicationServiceImplTest extends TestCase
         // GIVEN
         $this->externGateway->setFakeResult(
             'some title',
-            (new PublicationDtoCollection())
+            (new PublicationModelCollection())
                 ->addItem($this->publicationA)
                 ->addItem($this->publicationB)
                 ->addItem($this->publicationC)
         );
         $this->localStorage->setFakeFindByTitle(
             self::TITLE_SEARCH,
-            (new PublicationDtoCollection())
+            (new PublicationModelCollection())
                 ->addItem($this->publicationB)
                 ->addItem($this->publicationD)
         );
@@ -199,7 +199,7 @@ class PublicationServiceImplTest extends TestCase
 
         // THEN
         self::assertEquals(
-            (new PublicationDtoCollection())
+            (new PublicationModelCollection())
                 ->addItem($this->publicationA)
                 ->addItem($this->publicationB)
                 ->addItem($this->publicationC)
@@ -207,7 +207,7 @@ class PublicationServiceImplTest extends TestCase
             $result
         );
         self::assertEquals(
-            (new PublicationDtoCollection())
+            (new PublicationModelCollection())
                 ->addItem($this->publicationA)
                 ->addItem($this->publicationC),
             $this->localStorage->spySavedItems()

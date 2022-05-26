@@ -3,18 +3,18 @@ declare(strict_types=1);
 
 namespace App\Tests\api;
 
-use App\api\Model\PublicationDtoCollection;
+use App\api\Model\PublicationModelCollection;
 use App\api\PublicationLocalStorage;
 
 class PublicationLocalStorageSpy implements PublicationLocalStorage
 {
-    protected PublicationDtoCollection $spyStored;
+    protected PublicationModelCollection $spyStored;
     protected array $fakeFindByTitle = [];
 
     /**
-     * @return PublicationDtoCollection|null If null then nothing is stored
+     * @return PublicationModelCollection|null If null then nothing is stored
      */
-    public function spySavedItems(): ?PublicationDtoCollection
+    public function spySavedItems(): ?PublicationModelCollection
     {
         if (isset($this->spyStored)) {
             return $this->spyStored;
@@ -22,21 +22,21 @@ class PublicationLocalStorageSpy implements PublicationLocalStorage
         return null;
     }
 
-    public function save(PublicationDtoCollection $publications): void
+    public function save(PublicationModelCollection $publications): void
     {
         $this->spyStored = $publications;
     }
 
-    public function setFakeFindByTitle(string $title, PublicationDtoCollection $publications): void
+    public function setFakeFindByTitle(string $title, PublicationModelCollection $publications): void
     {
         $this->fakeFindByTitle[$title] = $publications;
     }
 
-    public function searchByTitle(string $filterByTitle): PublicationDtoCollection
+    public function searchByTitle(string $filterByTitle): PublicationModelCollection
     {
         if (array_key_exists($filterByTitle, $this->fakeFindByTitle)) {
             return $this->fakeFindByTitle[$filterByTitle];
         }
-        return new PublicationDtoCollection();
+        return new PublicationModelCollection();
     }
 }

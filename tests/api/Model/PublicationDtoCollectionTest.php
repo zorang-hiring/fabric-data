@@ -3,27 +3,27 @@ declare(strict_types=1);
 
 namespace App\Tests\api\Model;
 
-use App\api\Model\PublicationDto;
-use App\api\Model\PublicationDtoCollection;
-use App\api\Model\PublicationDtoFactory;
+use App\api\Model\PublicationModel;
+use App\api\Model\PublicationModelCollection;
+use App\api\Model\PublicationModelFactory;
 use PHPUnit\Framework\TestCase;
 
 class PublicationDtoCollectionTest extends TestCase
 {
-    protected PublicationDtoFactory $factory;
+    protected PublicationModelFactory $factory;
 
     protected function setUp(): void
     {
         parent::setUp();
-        $this->factory = new PublicationDtoFactory();
+        $this->factory = new PublicationModelFactory();
     }
 
     public function testAll()
     {
         // GIVEN
-        $collection = new PublicationDtoCollection();
-        $collection->addItem($item1 = new PublicationDto());
-        $collection->addItem($item2 = new PublicationDto());
+        $collection = new PublicationModelCollection();
+        $collection->addItem($item1 = new PublicationModel());
+        $collection->addItem($item2 = new PublicationModel());
 
         // WHEN, THEN
         self::assertSame(2, count($collection));
@@ -32,7 +32,7 @@ class PublicationDtoCollectionTest extends TestCase
 
     public function testHasEqual()
     {
-        $collection = new PublicationDtoCollection();
+        $collection = new PublicationModelCollection();
         $collection->addItem($this->factory->makeOne([
             'externalId' => 'ImdbID',
             'type' => 'movie',

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Tests\api\Model;
 
-use App\api\Model\PublicationDto;
-use App\api\Model\PublicationDtoFactory;
+use App\api\Model\PublicationModel;
+use App\api\Model\PublicationModelFactory;
 use PHPUnit\Framework\TestCase;
 
 class PublicationDtoFactoryTest extends TestCase
@@ -12,7 +12,7 @@ class PublicationDtoFactoryTest extends TestCase
 
     public function testMakeOne()
     {
-        $o = new PublicationDto();
+        $o = new PublicationModel();
         $o->externalId = '1';
         $o->type = '2';
         $o->tittle = '3';
@@ -21,7 +21,7 @@ class PublicationDtoFactoryTest extends TestCase
 
         self::assertEquals(
             $o,
-            (new PublicationDtoFactory())->makeOne([
+            (new PublicationModelFactory())->makeOne([
                 'externalId' => '1',
                 'type' => '2',
                 'title' => '3',

@@ -21,7 +21,7 @@ class PublicationController
         return $this->buildResponse($response, $result);
     }
 
-    protected function buildResponse(Response $response, Model\PublicationDtoCollection $result): Response
+    protected function buildResponse(Response $response, Model\PublicationModelCollection $result): Response
     {
         $response->getBody()->write(json_encode([
             'success' => 'OK',

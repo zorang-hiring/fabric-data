@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\api;
 
-use App\api\Model\PublicationDtoCollection;
-use App\api\Model\PublicationDtoFactory;
+use App\api\Model\PublicationModelCollection;
+use App\api\Model\PublicationModelFactory;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 
@@ -12,10 +12,10 @@ class PublicationLocalStorageImpl implements PublicationLocalStorage
 {
     public function __construct(
         protected Connection $connection,
-        protected PublicationDtoFactory $factory
+        protected PublicationModelFactory $factory
     ){}
 
-    public function save(PublicationDtoCollection $publications): void
+    public function save(PublicationModelCollection $publications): void
     {
         foreach ($publications->getAll() as $publication) {
             $this->connection->executeStatement(
@@ -39,7 +39,7 @@ class PublicationLocalStorageImpl implements PublicationLocalStorage
         }
     }
 
-    public function searchByTitle(string $filterByTitle): PublicationDtoCollection
+    public function searchByTitle(string $filterByTitle): PublicationModelCollection
     {
 
         $result = $this->connection->fetchAllAssociative(
@@ -48,7 +48,7 @@ class PublicationLocalStorageImpl implements PublicationLocalStorage
             ['title' => ParameterType::STRING]
         );
 
-        $return = new PublicationDtoCollection();
+        $return = new PublicationModelCollection();
         foreach ($result as $row) {
             $return->addItem($this->factory->makeOne([
                 'externalId' => $row['externalId'],

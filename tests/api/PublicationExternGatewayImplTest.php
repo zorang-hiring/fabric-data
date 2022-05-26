@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace App\Tests\api;
 
 use App\api\Exception\UnexpectedExternalPublicationsException;
-use App\api\Model\PublicationDtoCollection;
-use App\api\Model\PublicationDtoFactory;
+use App\api\Model\PublicationModelCollection;
+use App\api\Model\PublicationModelFactory;
 use App\api\PublicationExternGatewayImpl;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -19,7 +19,7 @@ class PublicationExternGatewayImplTest extends TestCase
     const EXPECTED_EXTERNAL_ENDPOINT = 'http://www.omdbapi.com/?s=The+Matrix&apikey=720c3666';
     protected PublicationExternGatewayImpl $gateway;
     protected MockObject|Client $httpClient;
-    protected PublicationDtoFactory $factory;
+    protected PublicationModelFactory $factory;
     
     protected function setUp(): void
     {
@@ -29,7 +29,7 @@ class PublicationExternGatewayImplTest extends TestCase
             $this->httpClient,
             '720c3666'
         );
-        $this->factory = new PublicationDtoFactory();
+        $this->factory = new PublicationModelFactory();
     }
 
     public function dataProvider_error(): array
@@ -83,7 +83,7 @@ class PublicationExternGatewayImplTest extends TestCase
 
         // THEN
         self::assertEquals(
-            (new PublicationDtoCollection())
+            (new PublicationModelCollection())
                 ->addItem($this->factory->makeOne([
                     'externalId' => 'tt0133093',
                     'type' => 'movie',

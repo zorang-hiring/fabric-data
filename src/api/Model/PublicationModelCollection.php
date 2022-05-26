@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace App\api\Model;
 
-class PublicationDtoCollection implements \Countable, \JsonSerializable
+class PublicationModelCollection implements \Countable, \JsonSerializable
 {
     /**
-     * @var PublicationDto[]
+     * @var PublicationModel[]
      */
     protected array $publications = [];
 
-    public function addItem(PublicationDto $publication): self
+    public function addItem(PublicationModel $publication): self
     {
         $this->publications[] = $publication;
         return $this;
@@ -26,7 +26,7 @@ class PublicationDtoCollection implements \Countable, \JsonSerializable
         return $this->publications;
     }
 
-    public function hasEqual(PublicationDto $publication)
+    public function hasEqual(PublicationModel $publication)
     {
         foreach ($this->getAll() as $item) {
             if ($item->isEqual($publication)) {

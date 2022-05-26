@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\api;
 
-use App\api\Model\PublicationDtoFactory;
+use App\api\Model\PublicationModelFactory;
 use Doctrine\DBAL\DriverManager;
 use GuzzleHttp\Client;
 use Slim\Factory\AppFactory;
@@ -30,7 +30,7 @@ $controller = new PublicationController(
                 'dbname' => (string) $_ENV['MYSQL_DATABASE'],
                 'driver' => 'pdo_mysql'
             ]),
-            new PublicationDtoFactory()
+            new PublicationModelFactory()
         ),
     )
 );
