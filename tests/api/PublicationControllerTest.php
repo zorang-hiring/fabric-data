@@ -4,9 +4,11 @@ declare(strict_types=1);
 namespace App\Tests\api;
 
 use App\api\PublicationController;
+use GuzzleHttp\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use SHaus\TppAuthCmp\User;
 
 class PublicationControllerTest extends TestCase
 {
@@ -24,11 +26,13 @@ class PublicationControllerTest extends TestCase
 
     public function testHandle()
     {
-        // GIVEN
-        $response = new \GuzzleHttp\Psr7\Response();
-
         // WHEN
-        $this->controller->handle('some title', $response);
+        $this->controller->handle(
+            (new ServerRequest('GET', 'https://some.com'))
+                ->withAttribute('q', 'some title')
+            ,
+            $response = new \GuzzleHttp\Psr7\Response()
+        );
 
         // THEN
         self::assertSame(200, $response->getStatusCode());
