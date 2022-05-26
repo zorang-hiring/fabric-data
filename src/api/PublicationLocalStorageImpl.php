@@ -41,9 +41,11 @@ class PublicationLocalStorageImpl implements PublicationLocalStorage
 
     public function searchByTitle(string $filterByTitle): PublicationModelCollection
     {
-
         $result = $this->connection->fetchAllAssociative(
-            "SELECT * FROM publications WHERE title LIKE '%:title%'",
+            "SELECT pu.externalId, pu.title, pu.year, pu.type, po.url as poster "
+            . "FROM publications pu "
+            . "LEFT JOIN posters po ON pu.poster_id = po.id"
+            . "WHERE pu.title LIKE '%:title%'",
             ['title' => $filterByTitle],
             ['title' => ParameterType::STRING]
         );
