@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\api\Model;
 
-class PublicationDto
+class PublicationDto implements \JsonSerializable
 {
     public string $externalId;
     public string $type;
@@ -23,5 +23,16 @@ class PublicationDto
             return true;
         }
         return false;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'externalId' => $this->externalId,
+            'type' => $this->type,
+            'title' => $this->tittle,
+            'year' => $this->year,
+            'poster' => $this->poster,
+        ];
     }
 }

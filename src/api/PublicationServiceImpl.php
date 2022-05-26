@@ -12,7 +12,7 @@ class PublicationServiceImpl implements PublicationService
     public function __construct(
         protected PublicationExternGateway $externGateway,
         protected PublicationLocalStorage $localStorage,
-        protected LoggerInterface $logger
+        protected ?LoggerInterface $logger = null
     ){}
 
     public function handle(string $filterByTitle): PublicationDtoCollection
@@ -34,7 +34,7 @@ class PublicationServiceImpl implements PublicationService
         } catch (UnexpectedExternalPublicationsException $e) {
             // if external publications can not be obtained then log warning and return empty
             // publications to avoid braking if frontend
-            $this->logger->warning('Unexpected external gateway result');
+            $this->logger?->warning('Unexpected external gateway result');
             $externalResult = new PublicationDtoCollection();
         }
         return $externalResult;

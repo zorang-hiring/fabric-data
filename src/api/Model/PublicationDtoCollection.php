@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\api\Model;
 
-class PublicationDtoCollection implements \Countable
+class PublicationDtoCollection implements \Countable, \JsonSerializable
 {
     /**
      * @var PublicationDto[]
@@ -34,5 +34,10 @@ class PublicationDtoCollection implements \Countable
             }
         }
         return false;
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->getAll();
     }
 }
