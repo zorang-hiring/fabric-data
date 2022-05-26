@@ -47,11 +47,11 @@ class PublicationExternGatewayImpl implements PublicationExternGateway
     protected function buildPublication(array $externPublication): PublicationDto
     {
         return $this->publicationFactory->makeOne([
-            'externalId' => $externPublication['imdbID'],
-            'type' => $externPublication['Type'],
-            'title' => $externPublication['Title'],
-            'year' => $externPublication['Year'],
-            'poster' => $externPublication['Poster'],
+            'externalId' => $externPublication['imdbID'] ?? '',
+            'type' => $externPublication['Type'] ?? '',
+            'title' => $externPublication['Title'] ?? '',
+            'year' => $externPublication['Year'] ?? '',
+            'poster' => $externPublication['Poster'] ?? '',
         ]);
     }
 

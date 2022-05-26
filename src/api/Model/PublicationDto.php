@@ -9,7 +9,7 @@ class PublicationDto implements \JsonSerializable
     public string $type;
     public string $tittle;
     public int $year;
-    public string $poster;
+    public ?string $poster;
 
     public function isEqual(PublicationDto $publication)
     {
@@ -32,7 +32,7 @@ class PublicationDto implements \JsonSerializable
             'type' => $this->type,
             'title' => $this->tittle,
             'year' => $this->year,
-            'poster' => $this->poster,
+            'poster' => $this->poster ?? null,
         ];
     }
 }

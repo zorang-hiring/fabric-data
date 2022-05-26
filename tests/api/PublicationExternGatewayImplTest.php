@@ -97,6 +97,13 @@ class PublicationExternGatewayImplTest extends TestCase
                     'title' => 'The Matrix Reloaded',
                     'year' => 2003,
                     'poster' => 'https://m.media-amazon.com/images/M/MV5BODE0MzZhZTgtYzkwYi00YmI5LThlZWYtOWRmNWE5ODk0NzMxXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg',
+                ]))
+                ->addItem($this->factory->makeOne([
+                    'externalId' => '',
+                    'type' => '',
+                    'title' => '',
+                    'year' => '',
+                    'poster' => null,
                 ])),
             $result
         );

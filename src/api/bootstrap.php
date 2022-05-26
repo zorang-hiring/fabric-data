@@ -13,7 +13,7 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 // init Server
 $app = AppFactory::create();
 $app->addRoutingMiddleware();
-$app->addErrorMiddleware(false, true, true);
+$app->addErrorMiddleware(true, true, true); // todo displayErrorsDetails set to false
 
 // init Controller
 $controller = new PublicationController(
