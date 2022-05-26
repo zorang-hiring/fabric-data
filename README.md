@@ -24,6 +24,7 @@ You will earn bonus points for testing your application and demonstrating archit
 
 1. Docker
 2. PHP any version (to run composer)
+3. free ports 8081 (for API) and 8080 (for UI)
 
 # Installation
 
