@@ -6,21 +6,17 @@ namespace App\Tests\api;
 use App\api\Exception\UnexpectedExternalPublicationsException;
 use App\api\PublicationDtoCollection;
 use App\api\PublicationDtoFactory;
-use App\api\PublicationExternGateway;
 use App\api\PublicationExternGatewayImpl;
-use Composer\Util\StreamContextFactory;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\HttpFactory;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamFactoryInterface;
 
 class PublicationExternGatewayImplTest extends TestCase
 {
-    const EXTERNAL_ENDPOINT = 'http://www.omdbapi.com/?s=The+Matrix&apikey=720c3666'; // todo move api key
+    const EXPECTED_EXTERNAL_ENDPOINT = 'http://www.omdbapi.com/?s=The+Matrix&apikey=720c3666';
     protected PublicationExternGatewayImpl $gateway;
     protected MockObject|Client $httpClient;
     protected PublicationDtoFactory $factory;
@@ -30,7 +26,8 @@ class PublicationExternGatewayImplTest extends TestCase
         parent::setUp();
         $this->httpClient = $this->mockHttpClient();
         $this->gateway = new PublicationExternGatewayImpl(
-            $this->httpClient
+            $this->httpClient,
+            '720c3666'
         );
         $this->factory = new PublicationDtoFactory();
     }
@@ -61,7 +58,7 @@ class PublicationExternGatewayImplTest extends TestCase
         // GIVEN
         $this->httpClient->expects(self::once())
             ->method('request')
-            ->with('get', self::EXTERNAL_ENDPOINT)
+            ->with('get', self::EXPECTED_EXTERNAL_ENDPOINT)
             ->willReturn($response);
 
         self::expectException(UnexpectedExternalPublicationsException::class);
@@ -75,7 +72,7 @@ class PublicationExternGatewayImplTest extends TestCase
         // GIVEN
         $this->httpClient->expects(self::once())
             ->method('request')
-            ->with('get', self::EXTERNAL_ENDPOINT)
+            ->with('get', self::EXPECTED_EXTERNAL_ENDPOINT)
             ->willReturn($this->makeHttpResponse(
                 200,
                 file_get_contents(__DIR__ . '/fixture/external-service-response.json')

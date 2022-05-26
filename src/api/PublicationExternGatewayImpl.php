@@ -11,7 +11,8 @@ class PublicationExternGatewayImpl implements PublicationExternGateway
     protected PublicationDtoFactory $publicationFactory;
 
     public function __construct(
-        protected ClientInterface $client
+        protected ClientInterface $client,
+        protected string $apiKey
     ){
         $this->publicationFactory = new PublicationDtoFactory();
     }
@@ -20,38 +21,41 @@ class PublicationExternGatewayImpl implements PublicationExternGateway
     {
         $response = $this->client->request(
             'get',
-            'http://www.omdbapi.com/?s=' . urlencode($title) . '&apikey=720c3666' // todo move api key
+            'http://www.omdbapi.com/?s=' . urlencode($title) . '&apikey=' . $this->apiKey
         );
 
         $responseJson = @json_decode($response->getBody()->getContents(), true);
-        if (
-            $response->getStatusCode() !== 200
-            || !is_array($responseJson)
-            || !array_key_exists('Search', $responseJson)
-        ) {
+        if ($this->isExpectedResponse($response, $responseJson)) {
             throw new UnexpectedExternalPublicationsException();
         }
 
         return $this->buildResult($responseJson['Search']);
     }
 
-    protected function buildResult($search): PublicationDtoCollection
+    protected function buildResult(array $externPublications): PublicationDtoCollection
     {
         $result = new PublicationDtoCollection();
-        foreach ($search as $item) {
-            $result->addItem($this->buildPublication($item));
+        foreach ($externPublications as $externPublication) {
+            $result->addItem($this->buildPublication($externPublication));
         }
         return $result;
     }
 
-    protected function buildPublication(mixed $item): PublicationDto
+    protected function buildPublication(array $externPublication): PublicationDto
     {
         return $this->publicationFactory->makeOne([
-            'externalId' => $item['imdbID'],
-            'type' => $item['Type'],
-            'title' => $item['Title'],
-            'year' => $item['Year'],
-            'poster' => $item['Poster'],
+            'externalId' => $externPublication['imdbID'],
+            'type' => $externPublication['Type'],
+            'title' => $externPublication['Title'],
+            'year' => $externPublication['Year'],
+            'poster' => $externPublication['Poster'],
         ]);
+    }
+
+    protected function isExpectedResponse(\Psr\Http\Message\ResponseInterface $response, mixed $responseJson): bool
+    {
+        return $response->getStatusCode() !== 200
+            || !is_array($responseJson)
+            || !array_key_exists('Search', $responseJson);
     }
 }
