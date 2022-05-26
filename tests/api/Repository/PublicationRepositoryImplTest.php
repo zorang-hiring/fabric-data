@@ -153,15 +153,15 @@ class PublicationRepositoryImplTest extends TestCase
                     $typesFindPoster
                 ]
             )
-            ->willReturnOnConsecutiveCalls(false, false, ['id' => 3]);
+            ->willReturnOnConsecutiveCalls(false, false, ['id' => 1]);
 
         $this->connection
-            ->expects(self::exactly(3))
+            ->expects(self::exactly(2))
             ->method('lastInsertId')
-            ->willReturnOnConsecutiveCalls(1, 2, 3);
+            ->willReturnOnConsecutiveCalls(1, 2);
 
         $this->connection
-            ->expects(self::exactly(6))
+            ->expects(self::exactly(5))
             ->method('executeStatement')
             ->withConsecutive(
                 [
@@ -203,21 +203,13 @@ class PublicationRepositoryImplTest extends TestCase
                     $typesReplacePublication
                 ],
                 [
-                    $sqlInsertPoster,
-                    [
-                        'md5' => md5('poster13'),
-                        'url' => 'poster13',
-                    ],
-                    $typesInsertPoster
-                ],
-                [
                     $sqlReplacePublication,
                     [
                         'externalId' => 'externId3',
                         'title' => 'title3',
                         'year' => 2003,
                         'type' => 'type3',
-                        'poster_id' => 3
+                        'poster_id' => 1
                     ],
                     $typesReplacePublication
                 ]

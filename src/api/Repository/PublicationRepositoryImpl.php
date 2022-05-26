@@ -22,27 +22,26 @@ class PublicationRepositoryImpl implements PublicationRepository
 
             $posterExists = $this->connection->fetchOne(
                 "SELECT id FROM posters WHERE md5 = :md5",
-                [
-                    'md5' => md5($publication->poster)
-                ],
-                [
-                    'md5' => ParameterType::STRING
-                ]
+                ['md5' => md5($publication->poster)],
+                ['md5' => ParameterType::STRING]
             );
 
-            $this->connection->executeStatement(
-                "INSERT INTO posters (md5, url) values (:md5, :url)",
-                [
-                    'md5' => md5($publication->poster),
-                    'url' => $publication->poster,
-                ],
-                [
-                    'md5' => ParameterType::STRING,
-                    'url' => ParameterType::STRING,
-                ]
-            );
-
-            $posterId = $this->connection->lastInsertId();
+            if (!$posterExists) {
+                $this->connection->executeStatement(
+                    "INSERT INTO posters (md5, url) values (:md5, :url)",
+                    [
+                        'md5' => md5($publication->poster),
+                        'url' => $publication->poster,
+                    ],
+                    [
+                        'md5' => ParameterType::STRING,
+                        'url' => ParameterType::STRING,
+                    ]
+                );
+                $posterId = $this->connection->lastInsertId();
+            } else {
+                $posterId = $posterExists['id'];
+            }
 
             $this->connection->executeStatement(
                 "REPLACE INTO publications (externalId, title, year, type, poster_id) values "
