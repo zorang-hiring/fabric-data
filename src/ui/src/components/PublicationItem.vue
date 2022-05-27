@@ -14,22 +14,20 @@
 
 <style scoped>
 .item {
-  margin-top: 2rem;
+  /*margin-top: 2rem;*/
   display: flex;
 }
 
 .details {
   flex: 1;
   margin-left: 1rem;
+  height: 100px;
 }
 
 i {
   display: flex;
   place-items: center;
   place-content: center;
-  width: 32px;
-  height: 32px;
-
   color: var(--color-text);
 }
 
@@ -47,14 +45,15 @@ h3 {
   }
 
   i {
-    top: calc(50% - 25px);
+    top: calc(50% - 50px);
     left: -26px;
     position: absolute;
     border: 1px solid var(--color-border);
     background: var(--color-background);
-    border-radius: 8px;
-    width: 50px;
-    height: 50px;
+    height: 100px;
+    width: 68px;
+    text-align: center;
+    color: var(--vt-c-divider-dark-2);
   }
 
   .item:before {

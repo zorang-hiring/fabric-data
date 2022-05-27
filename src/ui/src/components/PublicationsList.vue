@@ -38,13 +38,21 @@ export default {
   <div v-for="publication in publications">
     <PublicationItem>
       <template #icon>
-        a
+        <span v-if="publication.poster !== 'N/A'">
+            <img v-bind:src="publication.poster" height="100" alt="Poster" />
+        </span>
+        <span v-if="publication.poster === 'N/A'" class="no-image">no poster</span>
       </template>
       <template #heading>{{ publication.title }}</template>
-
-      Vue’s
-      <a target="_blank" href="https://vuejs.org/">official documentation</a>
-      provides you with all information you need to get started.
+      <strong class="uppercase">{{ publication.type }}</strong>
+      <div v-if="publication.year">Year: {{ publication.year }}</div>
+      <div v-if="!publication.year">&nbsp</div>
     </PublicationItem>
   </div>
 </template>
+
+<style scoped>
+   .uppercase {
+     text-transform: uppercase;
+   }
+</style>
