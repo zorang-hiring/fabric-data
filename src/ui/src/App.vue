@@ -6,7 +6,7 @@ import PublicationsList from './components/PublicationsList.vue'
 <template>
   <header>
     <div class="wrapper">
-      <Menu msg="Checkout Publications" />
+      <Menu msg="Check Publications" />
     </div>
   </header>
   <main>
