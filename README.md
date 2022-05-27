@@ -44,13 +44,18 @@ docker-compose -f docker/docker-compose.yml --env-file docker/sample.env up --bu
 
 # Usage
 
+
 ## API
+
+To access API directly use:
 
 GET `http://127.0.0.1:8081/api/publications?q=Mad+Max`
 
 Use parameter "q" as search parameter
 
 ## UI
+
+To access UI visit:
 
 `http://127.0.0.1:8080`
 
