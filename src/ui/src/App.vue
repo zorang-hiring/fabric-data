@@ -56,8 +56,9 @@ a,
 
   header {
     display: flex;
-    place-items: center;
+    place-items: flex-start;
     padding-right: calc(var(--section-gap) / 2);
+    padding-top: 100px;
   }
 
   header .wrapper {
