@@ -15,11 +15,11 @@
 git clone https://github.com/zorang-hiring/fabric-data
 ```
 
-##### 2. In root directory execute
+##### 2. Instal Composer dependencies
 ```
 php composer.phar install --ignore-platform-reqs
 ```
-##### 3. Go back to root directory and execute
+##### 3. Run Docker
 ```
 docker-compose -f docker/docker-compose.yml --env-file docker/sample.env up --build
 ```
