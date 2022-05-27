@@ -57,6 +57,11 @@ To show errors in API edit `docker/sample.env` file variable `APP_SHOW_ERRORS`.
 - PASSWORD = secret
 - USER = myuser
 
+tables:
+
+- publications
+- posters
+
 # Tech Stack, Architecture
 
 - Platform: Docker, Nginx
