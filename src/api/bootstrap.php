@@ -8,6 +8,9 @@ use App\api\Repository\PosterRepositoryImpl;
 use App\api\Repository\PublicationRepositoryImpl;
 use Doctrine\DBAL\DriverManager;
 use GuzzleHttp\Client as HttpClient;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
 use Slim\Factory\AppFactory;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
@@ -20,6 +23,15 @@ $app->addErrorMiddleware(
     true,
     true
 );
+// Allow wide Server Cors policy
+$app->add(function(Request $request, RequestHandler $handler): ResponseInterface {
+    $response = $handler->handle($request);
+    return $response
+        ->withHeader('Access-Control-Allow-Origin', '*')
+        ->withHeader('Access-Control-Allow-Credentials', 'true')
+        ->withHeader('Access-Control-Allow-Headers', ['Authorization', 'Accept'])
+        ->withHeader('Access-Control-Allow-Methods', ['GET, POST, PUT, DELETE, PATCH, OPTIONS']);
+});
 
 // init DB connection
 $dbConnection = DriverManager::getConnection([
