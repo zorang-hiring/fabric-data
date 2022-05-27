@@ -44,7 +44,6 @@ docker-compose -f docker/docker-compose.yml --env-file docker/sample.env up --bu
 
 # Usage
 
-
 ## API
 
 To access API directly use:
@@ -70,3 +69,9 @@ SEE https://take.ms/xFXxu
 # Debuging
 
 To show errors in API edit `docker/sample.env` file variable `APP_SHOW_ERRORS`.
+
+# Tech Stack, Architecture
+
+- Platform: Docker, Nginx
+- Backend: PHP8.0, MySQL, pure TDD
+- Frontend: VueJS 3
