@@ -1,19 +1,16 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import Menu from './components/Menu.vue'
+import PublicationsList from './components/PublicationsList.vue'
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <Menu msg="Checkout Publications" />
     </div>
   </header>
-
   <main>
-    <TheWelcome />
+    <PublicationsList />
   </main>
 </template>
 
@@ -30,11 +27,6 @@ import TheWelcome from './components/TheWelcome.vue'
 
 header {
   line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
 }
 
 a,
@@ -58,7 +50,7 @@ a,
 
   #app {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 3fr;
     padding: 0 2rem;
   }
 
@@ -72,10 +64,6 @@ a,
     display: flex;
     place-items: flex-start;
     flex-wrap: wrap;
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
   }
 }
 </style>
